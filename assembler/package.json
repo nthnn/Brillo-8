@@ -1,0 +1,27 @@
+{
+  "name": "brillo8_assembler",
+  "version": "0.0.1",
+  "description": "Brillo-8 Assembly Language Compiler CLI Tool",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nthnn/Brillo-8.git"
+  },
+  "keywords": [
+    "pocket",
+    "computer",
+    "brillo-8",
+    "arduino",
+    "virtual",
+    "machine"
+  ],
+  "author": "nthnn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nthnn/Brillo-8/issues"
+  },
+  "homepage": "https://github.com/nthnn/Brillo-8#readme"
+}
