@@ -1,2 +1,5 @@
+assembler/node_modules
+assembler/out
+assembler/dist
 firmware/.pio/
 firmware/.vscode/
