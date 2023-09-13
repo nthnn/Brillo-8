@@ -2,8 +2,12 @@
   "name": "brillo8_assembler",
   "version": "0.0.1",
   "description": "Brillo-8 Assembly Language Compiler CLI Tool",
-  "main": "index.ts",
+  "main": "src/assembler.ts",
   "scripts": {
+    "assembler": "npx ts-node .",
+    "compile": "npx tsc",
+    "clean": "npx rimraf ./dist ./out",
+    "build": "npm run compile && npx pkg -t node18-linux-x64,node18-macos-x64,node18-win-x64,node18-alpine-x64 --out-path ./out ./dist/assembler.js && npx rimraf ./dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,17 +15,22 @@
     "url": "git+https://github.com/nthnn/Brillo-8.git"
   },
   "keywords": [
-    "pocket",
-    "computer",
+    "pocket-computer",
     "brillo-8",
     "arduino",
-    "virtual",
-    "machine"
+    "virtual-machine"
   ],
   "author": "nthnn",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nthnn/Brillo-8/issues"
   },
-  "homepage": "https://github.com/nthnn/Brillo-8#readme"
+  "homepage": "https://github.com/nthnn/Brillo-8#readme",
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "pkg": "^5.8.1",
+    "rimraf": "^5.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
 }
