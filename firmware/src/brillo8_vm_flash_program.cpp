@@ -32,7 +32,7 @@ uint8_t& Brillo8FlashProgram::operator[](uint16_t address) {
 
 uint16_t Brillo8FlashProgram::size() {
     if(this->ptrc == 0)
-        while(eeprom.readByte(this->ptrc) != EOBC)
+        while(eeprom.readByte(this->ptrc) != B8_EOBC)
             this->ptrc++;
 
     return this->ptrc;

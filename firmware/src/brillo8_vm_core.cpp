@@ -29,40 +29,40 @@ void Brillo8VirtualMachine::execute() {
         uint8_t opcode = this->flash[this->pc];
 
         switch(opcode) {
-            case PUSH:
+            case B8_PUSH:
                 this->stack.push(this->flash[++this->pc]);
                 break;
 
-            case POP:
+            case B8_POP:
                 this->stack.pop();
                 break;
 
-            case ADD:       stack_ab(+)
-            case SUB:       stack_ab(-)
-            case MUL:       stack_ab(*)
-            case DIV:       stack_ab(/)
-            case REM:       stack_ab(%)
-            case POW:       stack_ab(^)
-            case AND:       stack_ab(&)
-            case OR:        stack_ab(|)
-            case SHL:       stack_ab(<<)
-            case SHR:       stack_ab(>>)
-            case LOG_AND:   stack_ab(&&)
-            case LOG_OR:    stack_ab(||)
-            case LT:        stack_ab(<)
-            case LE:        stack_ab(<=)
-            case GT:        stack_ab(>)
-            case GE:        stack_ab(>=)
-            case EQ:        stack_ab(==)
-            case NEQ:       stack_ab(!=)
+            case B8_ADD:       stack_ab(+)
+            case B8_SUB:       stack_ab(-)
+            case B8_MUL:       stack_ab(*)
+            case B8_DIV:       stack_ab(/)
+            case B8_REM:       stack_ab(%)
+            case B8_POW:       stack_ab(^)
+            case B8_AND:       stack_ab(&)
+            case B8_OR:        stack_ab(|)
+            case B8_SHL:       stack_ab(<<)
+            case B8_SHR:       stack_ab(>>)
+            case B8_LOG_AND:   stack_ab(&&)
+            case B8_LOG_OR:    stack_ab(||)
+            case B8_LT:        stack_ab(<)
+            case B8_LE:        stack_ab(<=)
+            case B8_GT:        stack_ab(>)
+            case B8_GE:        stack_ab(>=)
+            case B8_EQ:        stack_ab(==)
+            case B8_NEQ:       stack_ab(!=)
 
-            case JMP: {
+            case B8_JMP: {
                 uint16_t address = this->flash[++this->pc];
                 this->pc = address;
                 break;
             }
 
-            case IF: {
+            case B8_IF: {
                 fetch_stack(condition);
 
                 if(condition == 0) {
@@ -71,9 +71,9 @@ void Brillo8VirtualMachine::execute() {
                     while(nestedIfCount > 0) {
                         this->pc++;
 
-                        if(this->flash[this->pc] == IF)
+                        if(this->flash[this->pc] == B8_IF)
                             nestedIfCount++;
-                        else if(this->flash[this->pc] == ENDIF)
+                        else if(this->flash[this->pc] == B8_ENDIF)
                             nestedIfCount--;
                     }
                 }
@@ -81,21 +81,21 @@ void Brillo8VirtualMachine::execute() {
                 break;
             }
 
-            case ENDIF: break;
+            case B8_ENDIF: break;
 
-            case YIELD:
+            case B8_YIELD:
                 yield();
                 break;
 
-            case RESET:
+            case B8_RESET:
                 reset();
                 break;
 
-            case HALT:
+            case B8_HALT:
                 while(1);
                 break;
 
-            case PIN_MODE: {
+            case B8_PIN_MODE: {
                 fetch_stack(value);
                 fetch_stack(pin);
 
@@ -103,11 +103,11 @@ void Brillo8VirtualMachine::execute() {
                 break;
             }
 
-            case DIGITAL_READ:
+            case B8_DIGITAL_READ:
                 this->stack.push(digitalRead(this->flash[++this->pc]));
                 break;
 
-            case DIGITAL_WRITE: {
+            case B8_DIGITAL_WRITE: {
                 fetch_stack(value);
                 fetch_stack(pin);
 
@@ -115,11 +115,11 @@ void Brillo8VirtualMachine::execute() {
                 break;
             }
 
-            case ANALOG_READ:
+            case B8_ANALOG_READ:
                 this->stack.push(analogRead(this->flash[++this->pc]));
                 break;
 
-            case ANALOG_WRITE: {
+            case B8_ANALOG_WRITE: {
                 fetch_stack(value);
                 fetch_stack(pin);
 
@@ -127,11 +127,11 @@ void Brillo8VirtualMachine::execute() {
                 break;
             }
 
-            case ANALOG_REFERENCE:
+            case B8_ANALOG_REFERENCE:
                 analogReference(this->flash[++this->pc]);
                 break;
 
-            case PULSE_IN: {
+            case B8_PULSE_IN: {
                 fetch_stack(timeout);
                 fetch_stack(pin);
 
@@ -139,7 +139,7 @@ void Brillo8VirtualMachine::execute() {
                 break;
             }
 
-            case PULSE_IN_LONG: {
+            case B8_PULSE_IN_LONG: {
                 fetch_stack(timeout);
                 fetch_stack(pin);
 
@@ -147,11 +147,11 @@ void Brillo8VirtualMachine::execute() {
                 break;
             }
 
-            case LOAD:
+            case B8_LOAD:
                 this->stack.push(this->flash[this->flash[++this->pc]]);
                 break;
 
-            case STORE: {
+            case B8_STORE: {
                 uint8_t address = this->flash[++this->pc];
                 fetch_stack(value);
 
@@ -159,27 +159,27 @@ void Brillo8VirtualMachine::execute() {
                 break;
             }
 
-            case DELAY:
+            case B8_DELAY:
                 delay(this->stack.top());
                 this->stack.pop();
 
                 break;
 
-            case DELAY_MICROSECONDS:
+            case B8_DELAY_MICROSECONDS:
                 delayMicroseconds(this->stack.top());
                 this->stack.pop();
 
                 break;
 
-            case MILLIS:
+            case B8_MILLIS:
                 this->stack.push(millis());
                 break;
 
-            case MICROS:
+            case B8_MICROS:
                 this->stack.push(micros());
                 break;
 
-            case SHIFT_IN: {
+            case B8_SHIFT_IN: {
                 fetch_stack(data_pin);
                 fetch_stack(clock_pin);
                 fetch_stack(bit_order);
@@ -188,7 +188,7 @@ void Brillo8VirtualMachine::execute() {
                 break;
             }
 
-            case SHIFT_OUT: {
+            case B8_SHIFT_OUT: {
                 fetch_stack(data_pin);
                 fetch_stack(clock_pin);
                 fetch_stack(bit_order);
@@ -198,7 +198,7 @@ void Brillo8VirtualMachine::execute() {
                 break;
             }
 
-            case TONE: {
+            case B8_TONE: {
                 fetch_stack(pin);
                 fetch_stack(frequency);
 
@@ -206,68 +206,68 @@ void Brillo8VirtualMachine::execute() {
                 break;
             }
 
-            case NO_TONE: {
+            case B8_NO_TONE: {
                 fetch_stack(pin);
                 noTone(pin);
 
                 break;
             }
 
-            case RANDOM:
+            case B8_RANDOM:
                 this->stack.push(random());
                 break;
 
-            case RANDOM_SEED: {
+            case B8_RANDOM_SEED: {
                 fetch_stack(seed);
                 randomSeed(seed);
 
                 break;
             }
 
-            case I2C_BEGIN:
+            case B8_I2C_BEGIN:
                 Wire.begin(this->flash[++this->pc]);
                 break;
 
-            case I2C_END:
+            case B8_I2C_END:
                 Wire.end();
                 break;
 
-            case I2C_REQUEST:
+            case B8_I2C_REQUEST:
                 Wire.requestFrom(Wire.available(), (int) this->flash[++this->pc]);
                 break;
 
-            case I2C_AVAILABLE:
+            case B8_I2C_AVAILABLE:
                 this->stack.push(Wire.available());
                 break;
 
-            case I2C_READ:
+            case B8_I2C_READ:
                 this->stack.push(Wire.read());
                 break;
 
-            case I2C_WRITE:
+            case B8_I2C_WRITE:
                 Wire.write(this->stack.top());
                 this->stack.pop();
 
                 break;
 
-            case SPI_BEGIN:
+            case B8_SPI_BEGIN:
                 SPI.begin();
                 SPI.setBitOrder(this->flash[++this->pc]);
 
                 break;
 
-            case SPI_END:
+            case B8_SPI_END:
                 SPI.end();
                 break;
 
-            case SPI_TRANSFER: {
+            case B8_SPI_TRANSFER: {
                 fetch_stack(value);
                 this->stack.push(SPI.transfer(value));
 
                 break;
             }
 
-            case SPI_BEGIN_TRANSACTION: {
+            case B8_SPI_BEGIN_TRANSACTION: {
                 fetch_stack(data_mode);
                 fetch_stack(data_order);
                 fetch_stack(speed_max);
@@ -276,34 +276,34 @@ void Brillo8VirtualMachine::execute() {
                 break;
             }
 
-            case SPI_END_TRANSACTION:
+            case B8_SPI_END_TRANSACTION:
                 SPI.endTransaction();
                 break;
 
-            case SPI_USING_INTERRUPT: {
+            case B8_SPI_USING_INTERRUPT: {
                 fetch_stack(value);
                 SPI.usingInterrupt(value);
 
                 break;
             }
 
-            case SOFT_SERIAL_BEGIN:
+            case B8_SOFT_SERIAL_BEGIN:
                 this->softSerial.begin(9600);
                 break;
 
-            case SOFT_SERIAL_END:
+            case B8_SOFT_SERIAL_END:
                 this->softSerial.end();
                 break;
 
-            case SOFT_SERIAL_AVAILABLE:
+            case B8_SOFT_SERIAL_AVAILABLE:
                 this->stack.push(this->softSerial.available());
                 break;
 
-            case SOFT_SERIAL_READ:
+            case B8_SOFT_SERIAL_READ:
                 this->stack.push(this->softSerial.read());
                 break;
 
-            case SOFT_SERIAL_WRITE: {
+            case B8_SOFT_SERIAL_WRITE: {
                 fetch_stack(value);
                 this->softSerial.write(value);
 
