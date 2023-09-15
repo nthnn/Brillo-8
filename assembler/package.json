@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/nthnn/Brillo-8#readme",
   "devDependencies": {
-    "nodemon": "^3.0.1",
+    "@colors/colors": "^1.6.0",
     "pkg": "^5.8.1",
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
