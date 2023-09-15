@@ -9,233 +9,64 @@
 
 void (*reset)(void) = 0;
 
-VirtualMachine::VirtualMachine(FlashProgram flash):
+Brillo8VirtualMachine::Brillo8VirtualMachine(Brillo8FlashProgram flash):
     flash(flash),
     softSerial(BRILLO8_SOFT_SERIAL_RX, BRILLO8_SOFT_SERIAL_TX) { }
 
-void VirtualMachine::execute() {
+void Brillo8VirtualMachine::execute() {
+    #define fetch_stack(name) uint8_t name = this->stack.top(); \
+                              this->stack.pop()
+
+    #define stack_ab(op) {                                      \
+                            fetch_stack(b);                     \
+                            fetch_stack(a);                     \
+                                                                \
+                            this->stack.push(a op b);           \
+                            break;                              \
+                        }
+
     while(this->pc < this->flash.size()) {
         uint8_t opcode = this->flash[this->pc];
 
         switch(opcode) {
-            case PUSH: {
-                uint8_t value = this->flash[++this->pc];
-                this->stack.push(value);
+            case PUSH:
+                this->stack.push(this->flash[++this->pc]);
                 break;
-            }
 
             case POP:
                 this->stack.pop();
                 break;
 
-            case ADD: {
-                int b = this->stack.top();
-                this->stack.pop();
-            
-                int a = this->stack.top();
-                this->stack.pop();
-    
-                this->stack.push(a + b);
+            case ADD:       stack_ab(+)
+            case SUB:       stack_ab(-)
+            case MUL:       stack_ab(*)
+            case DIV:       stack_ab(/)
+            case REM:       stack_ab(%)
+            case POW:       stack_ab(^)
+            case AND:       stack_ab(&)
+            case OR:        stack_ab(|)
+            case SHL:       stack_ab(<<)
+            case SHR:       stack_ab(>>)
+            case LOG_AND:   stack_ab(&&)
+            case LOG_OR:    stack_ab(||)
+            case LT:        stack_ab(<)
+            case LE:        stack_ab(<=)
+            case GT:        stack_ab(>)
+            case GE:        stack_ab(>=)
+            case EQ:        stack_ab(==)
+            case NEQ:       stack_ab(!=)
+
+            case JMP: {
+                uint16_t address = this->flash[++this->pc];
+                this->pc = address;
                 break;
             }
-
-            case SUB: {
-                int b = this->stack.top();
-                this->stack.pop();
-            
-                int a = this->stack.top();
-                this->stack.pop();
-    
-                this->stack.push(a - b);
-                break;
-            }
-
-            case MUL: {
-                int b = this->stack.top();
-                this->stack.pop();
-            
-                int a = this->stack.top();
-                this->stack.pop();
-    
-                this->stack.push(a * b);
-                break;
-            }
-
-            case DIV: {
-                int b = this->stack.top();
-                this->stack.pop();
-            
-                int a = this->stack.top();
-                this->stack.pop();
-    
-                this->stack.push(a / b);
-                break;
-            }
-
-            case REM: {
-                int b = this->stack.top();
-                this->stack.pop();
-            
-                int a = this->stack.top();
-                this->stack.pop();
-    
-                this->stack.push(a % b);
-                break;
-            }
-
-            case POW: {
-                int b = this->stack.top();
-                this->stack.pop();
-            
-                int a = this->stack.top();
-                this->stack.pop();
-    
-                this->stack.push(a ^ b);
-                break;
-            }
-
-            case AND: {
-                int b = this->stack.top();
-                this->stack.pop();
-                
-                int a = this->stack.top();
-                this->stack.pop();
-            
-                this->stack.push(a & b);
-                break;
-            }
-
-            case OR: {
-                int b = this->stack.top();
-                this->stack.pop();
-
-                int a = this->stack.top();
-                this->stack.pop();
-            
-                this->stack.push(a | b);
-                break;
-            }
-
-            case SHL: {
-                int b = this->stack.top();
-                this->stack.pop();
-
-                int a = this->stack.top();
-                this->stack.pop();
-    
-                this->stack.push(a << b);
-                break;
-            }
-
-            case SHR: {
-                int b = this->stack.top();
-                this->stack.pop();
-
-                int a = this->stack.top();
-                this->stack.pop();
-
-                this->stack.push(a >> b);
-                break;
-            }
-
-            case LOG_AND: {
-                int b = this->stack.top();
-                this->stack.pop();
-
-                int a = this->stack.top();
-                this->stack.pop();
-
-                this->stack.push(a && b);
-                break;
-            }
-
-            case LOG_OR: {
-                int b = this->stack.top();
-                this->stack.pop();
-
-                int a = this->stack.top();
-                this->stack.pop();
-
-                this->stack.push(a || b);
-                break;
-            }
-
-            case LT: {
-                int b = this->stack.top();
-                this->stack.pop();
-
-                int a = this->stack.top();
-                this->stack.pop();
-
-                this->stack.push(a < b);
-                break;
-            }
-
-            case LE: {
-                int b = this->stack.top();
-                this->stack.pop();
-
-                int a = this->stack.top();
-                this->stack.pop();
-
-                this->stack.push(a <= b);
-                break;
-            }
-
-            case GT: {
-                int b = this->stack.top();
-                this->stack.pop();
-
-                int a = this->stack.top();
-                this->stack.pop();
-
-                this->stack.push(a > b);
-                break;
-            }
-
-            case GE: {
-                int b = this->stack.top();
-                this->stack.pop();
-
-                int a = this->stack.top();
-                this->stack.pop();
-
-                this->stack.push(a >= b);
-                break;
-            }
-
-            case EQ: {
-                int b = this->stack.top();
-                this->stack.pop();
-
-                int a = this->stack.top();
-                this->stack.pop();
-
-                this->stack.push(a == b);
-                break;
-            }
-
-            case NEQ: {
-                int b = this->stack.top();
-                this->stack.pop();
-
-                int a = this->stack.top();
-                this->stack.pop();
-
-                this->stack.push(a != b);
-                break;
-            }
-
-            case JMP:
-                this->pc = this->flash[++this->pc];
-                break;
 
             case IF: {
-                int condition = this->stack.top();
-                this->stack.pop();
+                fetch_stack(condition);
 
                 if(condition == 0) {
-                    int nestedIfCount = 1;
+                    uint16_t nestedIfCount = 1;
 
                     while(nestedIfCount > 0) {
                         this->pc++;
@@ -265,85 +96,66 @@ void VirtualMachine::execute() {
                 break;
 
             case PIN_MODE: {
-                uint8_t value = this->stack.top();
-                this->stack.pop();
-
-                uint8_t pin = this->stack.top();
-                this->stack.pop();
+                fetch_stack(value);
+                fetch_stack(pin);
 
                 pinMode(pin, value);
                 break;
             }
 
-            case DIGITAL_READ: {
-                int pin = this->flash[++this->pc], value = digitalRead(pin);            
-                this->stack.push(value);
-
+            case DIGITAL_READ:
+                this->stack.push(digitalRead(this->flash[++this->pc]));
                 break;
-            }
 
             case DIGITAL_WRITE: {
-                int pin = this->flash[++this->pc], value = this->stack.top();
-                this->stack.pop();
+                fetch_stack(value);
+                fetch_stack(pin);
 
                 digitalWrite(pin, value);
                 break;
             }
 
-            case ANALOG_READ: {
-                int pin = this->flash[++this->pc], value = analogRead(pin);
-                this->stack.push(value);
-
+            case ANALOG_READ:
+                this->stack.push(analogRead(this->flash[++this->pc]));
                 break;
-            }
 
             case ANALOG_WRITE: {
-                int pin = this->flash[++this->pc], value = this->stack.top();
-                this->stack.pop();
+                fetch_stack(value);
+                fetch_stack(pin);
 
                 analogWrite(pin, value);
                 break;
             }
 
-            case ANALOG_REFERENCE: {
-                int mode = this->flash[++this->pc];
-                analogReference(mode);
-
+            case ANALOG_REFERENCE:
+                analogReference(this->flash[++this->pc]);
                 break;
-            }
 
             case PULSE_IN: {
-                int pin = this->flash[++this->pc], timeout = this->stack.top();
-                this->stack.pop();
+                fetch_stack(timeout);
+                fetch_stack(pin);
 
-                int value = pulseIn(pin, 1, timeout);
-                this->stack.push(value);
-
+                this->stack.push(pulseIn(pin, 1, timeout));
                 break;
             }
 
             case PULSE_IN_LONG: {
-                int pin = this->flash[++this->pc], timeout = this->stack.top();
-                this->stack.pop();
+                fetch_stack(timeout);
+                fetch_stack(pin);
 
-                int value = pulseInLong(pin, 1, timeout);
-                this->stack.push(value);
-
+                this->stack.push(pulseInLong(pin, 1, timeout));
                 break;
             }
 
-            case LOAD: {
-                int address = this->flash[++this->pc], value = this->flash[address];
-                this->stack.push(value);
-
+            case LOAD:
+                this->stack.push(this->flash[this->flash[++this->pc]]);
                 break;
-            }
 
             case STORE: {
-                int address = this->flash[++this->pc], value = this->stack.top();
-                this->stack.pop();
-                this->flash[address] = value;
+                uint8_t address = this->flash[++this->pc];
+                fetch_stack(value);
 
+                this->flash[address] = value;
                 break;
             }
 
@@ -368,44 +180,49 @@ void VirtualMachine::execute() {
                 break;
 
             case SHIFT_IN: {
-                int dataPin = this->flash[++this->pc];
-                int clockPin = this->flash[++this->pc];
-                int bitOrder = this->flash[++this->pc];
-                int value = shiftIn(dataPin, clockPin, bitOrder);
+                fetch_stack(data_pin);
+                fetch_stack(clock_pin);
+                fetch_stack(bit_order);
 
-                this->stack.push(value);
+                this->stack.push(shiftIn(data_pin, clock_pin, bit_order));
                 break;
             }
 
             case SHIFT_OUT: {
-                int dataPin = this->flash[++this->pc];
-                int clockPin = this->flash[++this->pc];
-                int bitOrder = this->flash[++this->pc];
-                int value = this->stack.top();
+                fetch_stack(data_pin);
+                fetch_stack(clock_pin);
+                fetch_stack(bit_order);
+                fetch_stack(value);
 
-                this->stack.pop();
-                shiftOut(dataPin, clockPin, bitOrder, value);
+                shiftOut(data_pin, clock_pin, bit_order, value);
                 break;
             }
 
             case TONE: {
-                int pin = this->flash[++this->pc], frequency = this->flash[++this->pc];
-                tone(pin, frequency);
+                fetch_stack(pin);
+                fetch_stack(frequency);
 
+                tone(pin, frequency);
                 break;
             }
 
-            case NO_TONE:
-                noTone(this->flash[++this->pc]);
+            case NO_TONE: {
+                fetch_stack(pin);
+                noTone(pin);
+
                 break;
+            }
 
             case RANDOM:
                 this->stack.push(random());
                 break;
 
-            case RANDOM_SEED:
-                randomSeed(this->flash[++this->pc]);
+            case RANDOM_SEED: {
+                fetch_stack(seed);
+                randomSeed(seed);
+
                 break;
+            }
 
             case I2C_BEGIN:
                 Wire.begin(this->flash[++this->pc]);
@@ -428,13 +245,15 @@ void VirtualMachine::execute() {
                 break;
 
             case I2C_WRITE:
-                this->stack.pop();
                 Wire.write(this->stack.top());
+                this->stack.pop();
+
                 break;
 
             case SPI_BEGIN:
                 SPI.begin();
                 SPI.setBitOrder(this->flash[++this->pc]);
+
                 break;
 
             case SPI_END:
@@ -442,25 +261,18 @@ void VirtualMachine::execute() {
                 break;
 
             case SPI_TRANSFER: {
-                int value = this->stack.top();
-                this->stack.pop();
+                fetch_stack(value);
+                this->stack.push(SPI.transfer(value));
 
-                int result = SPI.transfer(value);
-                this->stack.push(result);
                 break;
             }
 
             case SPI_BEGIN_TRANSACTION: {
-                int dataMode = this->stack.top();
-                this->stack.pop();
-    
-                int dataOrder = this->stack.top();
-                this->stack.pop();
-                
-                int speedMaximum = this->stack.top();
-                this->stack.pop();
-        
-                SPI.beginTransaction(SPISettings(speedMaximum, dataOrder, dataMode));
+                fetch_stack(data_mode);
+                fetch_stack(data_order);
+                fetch_stack(speed_max);
+
+                SPI.beginTransaction(SPISettings(speed_max, data_order, data_mode));
                 break;
             }
 
@@ -469,15 +281,14 @@ void VirtualMachine::execute() {
                 break;
 
             case SPI_USING_INTERRUPT: {
-                int value = this->stack.top();
-                this->stack.pop();
-
+                fetch_stack(value);
                 SPI.usingInterrupt(value);
+
                 break;
             }
 
             case SOFT_SERIAL_BEGIN:
-                this->softSerial.begin(this->flash[++this->pc]);
+                this->softSerial.begin(9600);
                 break;
 
             case SOFT_SERIAL_END:
@@ -493,10 +304,9 @@ void VirtualMachine::execute() {
                 break;
 
             case SOFT_SERIAL_WRITE: {
-                int value = this->stack.top();
-                this->stack.pop();
-
+                fetch_stack(value);
                 this->softSerial.write(value);
+
                 break;
             }
 
@@ -505,4 +315,7 @@ void VirtualMachine::execute() {
 
         this->pc++;
     }
+
+    #undef fetch_stack
+    #undef stack_ab
 }

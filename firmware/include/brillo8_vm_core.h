@@ -6,15 +6,15 @@
 #include "brillo8_vm_flash_program.h"
 #include "brillo8_vm_stack.hpp"
 
-class VirtualMachine {
+class Brillo8VirtualMachine {
     private:
         Brillo8Stack stack;
-        FlashProgram flash;
+        Brillo8FlashProgram flash;
         SoftwareSerial softSerial;
         uint16_t pc = 0;
 
     public:
-        VirtualMachine(FlashProgram flash);
+        Brillo8VirtualMachine(Brillo8FlashProgram flash);
         void execute();
 };
 

@@ -9,7 +9,7 @@ int get_input_bytecode();
 void load_program();
 void blink_once();
 
-FlashProgram flash;
+Brillo8FlashProgram flash;
 
 void setup() {
     pinMode(BRILLO8_BTN_PUSH, INPUT_PULLUP);
@@ -95,7 +95,7 @@ void loop() {
 }
 
 void load_program() {
-    VirtualMachine mainVM(flash);
+    Brillo8VirtualMachine mainVM(flash);
     mainVM.execute();
 
     while(1);

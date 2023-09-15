@@ -5,13 +5,13 @@
 
 #include "brillo8_vm_config.h"
 
-class FlashProgram {
+class Brillo8FlashProgram {
 private:
     uint8_t* elements;
     uint16_t ptrc = 0;
 
 public:
-    FlashProgram();
+    Brillo8FlashProgram();
 
     void init();
     void push(const uint8_t& instruction);
