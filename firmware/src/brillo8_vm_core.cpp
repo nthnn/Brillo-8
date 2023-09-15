@@ -6,26 +6,23 @@
 #include "brillo8_vm_core.h"
 #include "brillo8_vm_stack.hpp"
 #include "brillo8_vm_opcodes.h"
-#include "brillo8_vm_vector.h"
 
 void (*reset)(void) = 0;
 
-VirtualMachine::VirtualMachine():
+VirtualMachine::VirtualMachine(FlashProgram flash):
+    flash(flash),
     softSerial(BRILLO8_SOFT_SERIAL_RX, BRILLO8_SOFT_SERIAL_TX) { }
 
-void VirtualMachine::loadProgram(const EEPROMVector& program) {
-    this->memory = program;
-    this->pc = 0;
-}
-
 void VirtualMachine::execute() {
-    while(this->pc < this->memory.size()) {
-        int opcode = this->memory[this->pc];
+    while(this->pc < this->flash.size()) {
+        uint8_t opcode = this->flash[this->pc];
 
         switch(opcode) {
-            case PUSH:
-                this->stack.push(this->memory[++this->pc]);
+            case PUSH: {
+                uint8_t value = this->flash[++this->pc];
+                this->stack.push(value);
                 break;
+            }
 
             case POP:
                 this->stack.pop();
@@ -229,11 +226,9 @@ void VirtualMachine::execute() {
                 break;
             }
 
-            case JMP: {
-                uint16_t new_pc = this->memory[++this->pc];
-                this->pc = new_pc;
+            case JMP:
+                this->pc = this->flash[++this->pc];
                 break;
-            }
 
             case IF: {
                 int condition = this->stack.top();
@@ -245,9 +240,9 @@ void VirtualMachine::execute() {
                     while(nestedIfCount > 0) {
                         this->pc++;
 
-                        if(this->memory[this->pc] == IF)
+                        if(this->flash[this->pc] == IF)
                             nestedIfCount++;
-                        else if(this->memory[this->pc] == ENDIF)
+                        else if(this->flash[this->pc] == ENDIF)
                             nestedIfCount--;
                     }
                 }
@@ -270,7 +265,10 @@ void VirtualMachine::execute() {
                 break;
 
             case PIN_MODE: {
-                int pin = this->memory[++this->pc], value = this->stack.top();
+                uint8_t value = this->stack.top();
+                this->stack.pop();
+
+                uint8_t pin = this->stack.top();
                 this->stack.pop();
 
                 pinMode(pin, value);
@@ -278,14 +276,14 @@ void VirtualMachine::execute() {
             }
 
             case DIGITAL_READ: {
-                int pin = this->memory[++this->pc], value = digitalRead(pin);            
+                int pin = this->flash[++this->pc], value = digitalRead(pin);            
                 this->stack.push(value);
 
                 break;
             }
 
             case DIGITAL_WRITE: {
-                int pin = this->memory[++this->pc], value = this->stack.top();
+                int pin = this->flash[++this->pc], value = this->stack.top();
                 this->stack.pop();
 
                 digitalWrite(pin, value);
@@ -293,14 +291,14 @@ void VirtualMachine::execute() {
             }
 
             case ANALOG_READ: {
-                int pin = this->memory[++this->pc], value = analogRead(pin);
+                int pin = this->flash[++this->pc], value = analogRead(pin);
                 this->stack.push(value);
 
                 break;
             }
 
             case ANALOG_WRITE: {
-                int pin = this->memory[++this->pc], value = this->stack.top();
+                int pin = this->flash[++this->pc], value = this->stack.top();
                 this->stack.pop();
 
                 analogWrite(pin, value);
@@ -308,14 +306,14 @@ void VirtualMachine::execute() {
             }
 
             case ANALOG_REFERENCE: {
-                int mode = this->memory[++this->pc];
+                int mode = this->flash[++this->pc];
                 analogReference(mode);
 
                 break;
             }
 
             case PULSE_IN: {
-                int pin = this->memory[++this->pc], timeout = this->stack.top();
+                int pin = this->flash[++this->pc], timeout = this->stack.top();
                 this->stack.pop();
 
                 int value = pulseIn(pin, 1, timeout);
@@ -325,7 +323,7 @@ void VirtualMachine::execute() {
             }
 
             case PULSE_IN_LONG: {
-                int pin = this->memory[++this->pc], timeout = this->stack.top();
+                int pin = this->flash[++this->pc], timeout = this->stack.top();
                 this->stack.pop();
 
                 int value = pulseInLong(pin, 1, timeout);
@@ -335,26 +333,30 @@ void VirtualMachine::execute() {
             }
 
             case LOAD: {
-                int address = this->memory[++this->pc], value = this->memory[address];
+                int address = this->flash[++this->pc], value = this->flash[address];
                 this->stack.push(value);
 
                 break;
             }
 
             case STORE: {
-                int address = this->memory[++this->pc], value = this->stack.top();
+                int address = this->flash[++this->pc], value = this->stack.top();
                 this->stack.pop();
-                this->memory[address] = value;
+                this->flash[address] = value;
 
                 break;
             }
 
             case DELAY:
-                delay(this->memory[++this->pc]);
+                delay(this->stack.top());
+                this->stack.pop();
+
                 break;
 
             case DELAY_MICROSECONDS:
-                delayMicroseconds(this->memory[++this->pc]);
+                delayMicroseconds(this->stack.top());
+                this->stack.pop();
+
                 break;
 
             case MILLIS:
@@ -366,9 +368,9 @@ void VirtualMachine::execute() {
                 break;
 
             case SHIFT_IN: {
-                int dataPin = this->memory[++this->pc];
-                int clockPin = this->memory[++this->pc];
-                int bitOrder = this->memory[++this->pc];
+                int dataPin = this->flash[++this->pc];
+                int clockPin = this->flash[++this->pc];
+                int bitOrder = this->flash[++this->pc];
                 int value = shiftIn(dataPin, clockPin, bitOrder);
 
                 this->stack.push(value);
@@ -376,9 +378,9 @@ void VirtualMachine::execute() {
             }
 
             case SHIFT_OUT: {
-                int dataPin = this->memory[++this->pc];
-                int clockPin = this->memory[++this->pc];
-                int bitOrder = this->memory[++this->pc];
+                int dataPin = this->flash[++this->pc];
+                int clockPin = this->flash[++this->pc];
+                int bitOrder = this->flash[++this->pc];
                 int value = this->stack.top();
 
                 this->stack.pop();
@@ -387,14 +389,14 @@ void VirtualMachine::execute() {
             }
 
             case TONE: {
-                int pin = this->memory[++this->pc], frequency = this->memory[++this->pc];
+                int pin = this->flash[++this->pc], frequency = this->flash[++this->pc];
                 tone(pin, frequency);
 
                 break;
             }
 
             case NO_TONE:
-                noTone(this->memory[++this->pc]);
+                noTone(this->flash[++this->pc]);
                 break;
 
             case RANDOM:
@@ -402,11 +404,11 @@ void VirtualMachine::execute() {
                 break;
 
             case RANDOM_SEED:
-                randomSeed(this->memory[++this->pc]);
+                randomSeed(this->flash[++this->pc]);
                 break;
 
             case I2C_BEGIN:
-                Wire.begin(this->memory[++this->pc]);
+                Wire.begin(this->flash[++this->pc]);
                 break;
 
             case I2C_END:
@@ -414,7 +416,7 @@ void VirtualMachine::execute() {
                 break;
 
             case I2C_REQUEST:
-                Wire.requestFrom(Wire.available(), (int) this->memory[++this->pc]);
+                Wire.requestFrom(Wire.available(), (int) this->flash[++this->pc]);
                 break;
 
             case I2C_AVAILABLE:
@@ -432,7 +434,7 @@ void VirtualMachine::execute() {
 
             case SPI_BEGIN:
                 SPI.begin();
-                SPI.setBitOrder(this->memory[++this->pc]);
+                SPI.setBitOrder(this->flash[++this->pc]);
                 break;
 
             case SPI_END:
@@ -475,7 +477,7 @@ void VirtualMachine::execute() {
             }
 
             case SOFT_SERIAL_BEGIN:
-                this->softSerial.begin(this->memory[++this->pc]);
+                this->softSerial.begin(this->flash[++this->pc]);
                 break;
 
             case SOFT_SERIAL_END:

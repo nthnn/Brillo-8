@@ -44,7 +44,7 @@ class Brillo8Stack {
         }
 
         int16_t size() const {
-            return this->topIndex + 1;
+            return this->maxSize;
         }
 
         bool empty() const {

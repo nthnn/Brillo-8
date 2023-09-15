@@ -78,7 +78,9 @@ enum Opcode {
     SOFT_SERIAL_END,
     SOFT_SERIAL_AVAILABLE,
     SOFT_SERIAL_READ,
-    SOFT_SERIAL_WRITE
+    SOFT_SERIAL_WRITE,
+
+    EOBC
 };
 
 #endif

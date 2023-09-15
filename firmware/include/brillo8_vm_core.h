@@ -3,20 +3,18 @@
 
 #include <SoftwareSerial.h>
 
+#include "brillo8_vm_flash_program.h"
 #include "brillo8_vm_stack.hpp"
-#include "brillo8_vm_vector.h"
 
 class VirtualMachine {
     private:
         Brillo8Stack stack;
-        EEPROMVector memory;
+        FlashProgram flash;
         SoftwareSerial softSerial;
         uint16_t pc = 0;
 
     public:
-        VirtualMachine();
-
-        void loadProgram(const EEPROMVector& program);
+        VirtualMachine(FlashProgram flash);
         void execute();
 };
 
