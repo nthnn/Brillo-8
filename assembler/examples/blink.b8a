@@ -1,0 +1,26 @@
+push 13
+push 1
+pmode
+
+push 13
+push 1
+dwrite
+
+push 250
+delay
+
+push 250
+delay
+
+push 250
+delay
+
+push 250
+delay
+
+push 13
+push 0
+dwrite
+
+jmp 4
+halt
