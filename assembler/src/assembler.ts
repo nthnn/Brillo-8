@@ -1,6 +1,8 @@
 import colors from '@colors/colors';
-import fs from 'fs';
-import process from 'process';
+import fs from 'node:fs';
+import process from 'node:process';
+
+function processFile(fileName: string): void { }
 
 function main(): void {
     colors.enable();
@@ -17,9 +19,22 @@ function main(): void {
     }
     else if(!fs.existsSync(fileName))
         console.log("│  ".cyan + "Input file not found.".red + "                                 │".cyan);
+    else console.log("│  ".cyan + "Compiling input file...                               " + "│".cyan);
 
     console.log("└────────────────────────────────────────────────────────┘".cyan);
     console.log();
+
+    if(fileName != undefined && fs.existsSync(fileName)) {
+        console.log("  ‣ ".green + "Compiling " + fileName.green);
+
+        let start = process.hrtime();
+        processFile(fileName);
+
+        let ms: string = (process.hrtime(start)[1] / 1000000).toFixed(6);
+        console.log("  ‣ ".green + "Ellapsed " + (ms + "ms").green);
+        console.log("  ‣ ".green + "Done!");
+        console.log();
+    }
 }
 
 main();
