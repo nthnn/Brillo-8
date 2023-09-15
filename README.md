@@ -1,5 +1,8 @@
 # Brillo-8 Pocket Programmable Computer
 
+![Firmware CI](https://github.com/nthnn/Planet096/actions/workflows/firmware.yml/badge.svg) ![Assembler NodeJS/CI](https://github.com/nthnn/Planet096/actions/workflows/assembler.yml/badge.svg)
+[![License: CERN Open Hardware](https://img.shields.io/badge/License-LGPL3.0-yellow.svg)](LICENSE)
+
 Brillo-8 is a tiny computer created to carry out instructions saved in a 24LC512 EEPROM (Electrically Erasable Programmable Read-Only Memory). It's packed neatly on a small 80cm x 50mm circuit board. This little computing marvel comes with handy controls like DIP switches, a "PUSH" button for entering instructions, a "FLASH" button for running instructions from the EEPROM, and a "RESET" button to start over if needed.
 
 Brillo-8, a fascinating fusion of hardware and software innovation, invites both enthusiasts and developers to embark on a captivating adventure into the miniature computing. This small but powerful virtual machine, residing within the trusted ATMega328P microcontroller, offers a compelling platform for several compelling reasons.
