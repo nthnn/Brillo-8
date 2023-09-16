@@ -1,11 +1,13 @@
 import colors from '@colors/colors';
 import fs from 'node:fs';
+import os from 'node:os';
 import process from 'node:process';
 
 function processFile(fileName: string): void { }
 
 function main(): void {
-    colors.enable();
+    if(os.platform() != "win32")
+        colors.enable();
 
     console.log("┌────────────────────────────────────────────────────────┐".cyan);
     console.log("│".cyan + "                   Brillo-8 Assembler".blue.bold + "                   │".cyan);
