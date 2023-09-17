@@ -2,8 +2,16 @@ import colors from '@colors/colors';
 import fs from 'node:fs';
 import os from 'node:os';
 import process from 'node:process';
+import Brillo8Tokenizer from './tokenizer';
+import { Brillo8IOUtil } from './util';
 
-function processFile(fileName: string): void { }
+function processFile(fileName: string): void {
+    let tokenizer: Brillo8Tokenizer = new Brillo8Tokenizer(
+        Brillo8IOUtil.readFile(fileName)
+    );
+
+    tokenizer.scan();
+}
 
 function main(): void {
     if(os.platform() != "win32")
