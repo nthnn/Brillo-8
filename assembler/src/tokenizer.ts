@@ -89,12 +89,21 @@ export default class Brillo8Tokenizer {
             this.advance();
     }
 
+    private skipComments(): void {
+        this.advance();
+ 
+        while(!this.isAtEnd() && this.peek() != '\n')
+            this.advance();
+    }
+
     public scan(): void {
         while(!this.isAtEnd()) {
             if(Brillo8TokenizerUtil.isPossibleInstruction(this.peek()))
                 this.scanPossibleInstruction();
             else if(Brillo8TokenizerUtil.isNumber(this.peek()))
                 this.scanDigits();
+            else if(this.peek() == ';')
+                this.skipComments();
 
             this.skipWhitespace();
         }
