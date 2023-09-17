@@ -73,7 +73,7 @@ export default class Brillo8Tokenizer {
             image: image,
             column: column,
             line: this.line,
-            type: Brillo8TokenType.INSTRUCTION
+            type: Brillo8TokenType.NUMBER
         });
 
         let asInt: number = parseInt(image);
