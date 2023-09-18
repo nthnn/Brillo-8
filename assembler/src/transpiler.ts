@@ -21,6 +21,6 @@ export default class Brillo8Transpiler {
             }
         });
 
-        return result.match(/.{1,36}/g)?.join("\n") as string;
+        return (result.match(/.{1,36}/g)?.join("\n") as string).trim();
     }
 }

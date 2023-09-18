@@ -5,14 +5,26 @@ import process from 'node:process';
 import Brillo8Tokenizer from './tokenizer';
 import { Brillo8IOUtil } from './util';
 import Brillo8Transpiler from './transpiler';
+import Brillo8TokenizerError from './tokenizer_error';
 
 function processFile(fileName: string): void {
     let contents: string = Brillo8IOUtil.readFile(fileName);
-    console.log("  ‣ ".green + "Reading input file.");
+    console.log("  ‣ ".green + "Reading".blue + " input file.");
 
     let tokenizer: Brillo8Tokenizer = new Brillo8Tokenizer(contents);
-    console.log("  ‣ ".green + "Starting lexical parsing...");
+    console.log("  ‣ ".green + "Starting".blue + " lexical parsing...");
     tokenizer.scan();
+
+    if(tokenizer.errors.length != 0) {
+        console.log("  ‣ ".green + "Errors".red + " encountered on lexical analysis:");
+        tokenizer.errors.forEach((error: Brillo8TokenizerError)=> {
+            console.log("    - " + error.error.red);
+            console.log(("       [line " + error.line + ", column " + error.column + "]").grey);
+        });
+
+        console.log("  ‣ ".green + "Assembler task " + "aborted".red + ".");
+        return;
+    }
     console.log("  ‣ ".green + "Lexical analysis done!");
 
     let transpiler: Brillo8Transpiler = new Brillo8Transpiler(tokenizer.tokens);
@@ -48,7 +60,7 @@ function main(): void {
     console.log("└────────────────────────────────────────────────────────┘\n".cyan);
 
     if(fileName != undefined && fs.existsSync(fileName)) {
-        console.log("  ‣ ".green + "Compiling " + fileName.green);
+        console.log("  ‣ ".green + "Compiling ".blue + fileName.green);
 
         let start = process.hrtime();
         processFile(fileName);
