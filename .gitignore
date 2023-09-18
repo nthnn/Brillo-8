@@ -1,5 +1,8 @@
 assembler/node_modules
 assembler/out
 assembler/dist
+docs/.parcel-cache
+docs/dist
+docs/node_modules
 firmware/.pio/
 firmware/.vscode/
