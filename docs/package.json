@@ -1,0 +1,36 @@
+{
+  "name": "brillo_8_docs",
+  "version": "0.0.1",
+  "description": "Brillo-8 Official Documentation",
+  "scripts": {
+    "docs": "parcel src/index.html --open",
+    "clean": "rimraf .parcel-cache dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nthnn/Brillo-8.git"
+  },
+  "keywords": [
+    "Brillo-8"
+  ],
+  "author": "nthnn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nthnn/Brillo-8/issues"
+  },
+  "homepage": "https://github.com/nthnn/Brillo-8#readme",
+  "devDependencies": {
+    "@heroicons/react": "^2.0.18",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "bootswatch": "^5.3.1",
+    "heroicons": "^2.0.18",
+    "parcel": "^2.9.3",
+    "process": "^0.11.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rimraf": "^5.0.1",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.2.2"
+  }
+}
