@@ -9,8 +9,14 @@ export default class Home extends React.Component {
     render() {
         return (
             <>
-                <IntroductionBanner />
                 <NavigationBar currentPage="home" onPageout={this.onPageout} />
+                <div className="rows">
+                    <div className="col-lg-6">
+                        <h1>Brillo-8: Programmable Pocket Computer</h1>
+                        <p>A programmable pocket computer packed neatly on a small 80cm x 50mm circuit board.</p>
+                        <button className="btn-outline-primary">Learn More</button>
+                    </div>
+                </div>
             </>
         );
     }
