@@ -4,7 +4,7 @@ export default class Brillo8TokenizerUtil {
     }
 
     public static isPossibleInstruction(char: string): boolean {
-        return /^[A-Z]+$/.test(char);
+        return /^[a-zA-Z]+$/.test(char);
     }
 
     public static isNumber(char: string): boolean {
