@@ -2,6 +2,7 @@
   "name": "brillo_8_docs",
   "version": "0.0.1",
   "description": "Brillo-8 Official Documentation",
+  "source": "src/index.html",
   "scripts": {
     "docs": "parcel src/index.html --open",
     "clean": "rimraf .parcel-cache dist"
