@@ -3,7 +3,7 @@
 import * as ReactDOMClient from 'react-dom/client';
 import React from 'react';
 import Home from './pages/home';
-import "../../node_modules/bootswatch/dist/litera/bootstrap.min.css";
+import "../../node_modules/bootswatch/dist/morph/bootstrap.min.css";
 
 let appRoot: ReactDOMClient.Root | null = null;
 let docRoot: HTMLElement | null = document.getElementById('root');

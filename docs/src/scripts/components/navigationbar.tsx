@@ -12,7 +12,7 @@ export default class NavigationBar extends React.Component<{
 }, {}> {
     render() {
         return (
-            <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+            <nav className="navbar navbar-expand-lg bg-secondary shadow" data-bs-theme="light">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">
                         <CpuChipIcon className="icon-32"/>
@@ -21,8 +21,8 @@ export default class NavigationBar extends React.Component<{
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-bar" aria-controls="nav-bar" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse" id="nav-bar">
-                        <ul className="navbar-nav me-auto">
+                    <div className="collapse navbar-collapse justify-content-end" id="nav-bar">
+                        <ul className="navbar-nav">
                             <li className="nav-item">
                                 <a href="#" className={(this.props.currentPage == "home" ? "active ": "") + "nav-link"} onClick={()=> this.props.currentPage !== "home" ? this.props.onPageout() : ()=> {}}>
                                     <HomeModernIcon className="icon-24"/>
