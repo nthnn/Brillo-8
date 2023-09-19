@@ -6,3 +6,4 @@ docs/dist
 docs/node_modules
 firmware/.pio/
 firmware/.vscode/
+.vercel

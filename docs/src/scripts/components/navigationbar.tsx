@@ -12,7 +12,7 @@ export default class NavigationBar extends React.Component<{
 }, {}> {
     render() {
         return (
-            <nav className="navbar navbar-expand-lg bg-secondary shadow" data-bs-theme="light">
+            <nav className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">
                         <CpuChipIcon className="icon-32"/>

@@ -24,8 +24,10 @@
   "homepage": "https://github.com/nthnn/Brillo-8#readme",
   "devDependencies": {
     "@heroicons/react": "^2.0.18",
+    "@types/bootstrap": "^5.2.7",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
+    "bootstrap": "^5.3.2",
     "bootswatch": "^5.3.1",
     "heroicons": "^2.0.18",
     "parcel": "^2.9.3",
