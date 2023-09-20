@@ -26,6 +26,7 @@ import VercelLogo from "../../assets/vercel-logo.png";
 import VSCodeLogo from "../../assets/vscode-logo.png";
 import StackIcon from "../components/stackicon";
 import HomePageCard from "../components/homepagecard";
+import Footer from "../components/footer";
 
 export default class Home extends React.Component {
     onPageout(): void {
@@ -219,6 +220,8 @@ export default class Home extends React.Component {
                     </div>
                     <br/>
                 </div>
+
+                <Footer />
             </>
         );
     }
