@@ -21,6 +21,10 @@
     display: block;
 }
 
+.mobile-only {
+    display: none;
+}
+
 .icon-32, .icon-24 {
     margin-top: -4px;
     padding-right: 4px;
@@ -35,6 +39,11 @@
 .icon-24 {
     width: 24px;
     height: 24px;
+}
+
+.icon-mob-48 {
+    width: 48px;
+    height: 48px;
 }
 
 .icon-48 {
@@ -76,9 +85,21 @@
     width: 25%;
 }
 
+.tech-stack {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    margin: 8px;
+}
+
 @media only screen and (max-width: 600px) {
     .desktop-only, .glass-01, .glass-02 {
         display: none;
+    }
+
+    .mobile-only {
+        display: block;
     }
 
     .brillo-8 {
