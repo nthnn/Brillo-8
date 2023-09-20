@@ -31,7 +31,7 @@ export default class Home extends React.Component {
                             </div>
 
                             <div className="row">
-                                <div className="col-md-2"></div>
+                                <div className="col-md-1"></div>
 
                                 <div className="col-md-9">
                                     <div className="container">
@@ -45,7 +45,7 @@ export default class Home extends React.Component {
                                     </div>
                                 </div>
 
-                                <div className="col-md-1"></div>
+                                <div className="col-md-2"></div>
                             </div>
 
                             <br className="desktop-only" /><br/>
@@ -66,12 +66,12 @@ export default class Home extends React.Component {
                     <center><ArrowDownIcon className="icon-32" /></center>
                 </div>
 
-                <div className="desktop-only"><br/></div>
+                <div className="desktop-only"><br/><br/></div>
                 <br/>
 
                 <NavigationBar currentPage="home" onPageout={this.onPageout} />
 
-                <br id="main-section" /><br/><br/><br/><br/>
+                <br id="main-section"/><br/><br/><br/><br/><br/>
                 <div className="desktop-only"><br/></div>
 
                 <div className="container">
@@ -89,7 +89,7 @@ export default class Home extends React.Component {
                         <div className="col-sm-2"></div>
                     </div>
                 </div>
-                <br/><br/><br/><br/><br/><br/>
+                <br/><br/><br/><br/><br/><br/><br/>
 
                 <div className="container">
                     <div className="row">
@@ -192,8 +192,8 @@ export default class Home extends React.Component {
                         </div>
                     </div>
 
-                    <br className="desktop-only" />
-                    <br/><br/>
+                    <div className="desktop-only"><br/><br/></div>
+                    <br/>
                 </div>
             </>
         );
