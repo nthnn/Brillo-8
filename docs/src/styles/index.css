@@ -13,16 +13,8 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(55, 94, 148, 0.4);
+    background: var(--bs-primary);
     border-radius: var(--bs-border-radius);
-}
-  
-.brillo-8 {
-    transition: all 0.6s ease-in-out;
-}
-
-.brillo-8:hover {
-    transform: scale(1.02);
 }
 
 .desktop-only {
@@ -45,8 +37,56 @@
     height: 24px;
 }
 
+.icon-48 {
+    margin-top: -48px;
+    margin-bottom: 10px;
+    padding: 12px;
+    width: 60px;
+    height: 60px;
+    background-color: var(--bs-body-bg);
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 100%;
+}
+
+.glass-01, .glass-02 {
+    position: absolute;
+}
+
+.brillo-8 {
+    margin-left: -8%;
+    margin-top: 6%;
+}
+
+.glass-01 {
+    right: 0px;
+    top: 2%;
+    width: 18%;
+}
+
+.glass-02 {
+    z-index: -1;
+    left: 40%;
+    bottom: 6%;
+    width: 18%;
+}
+
+.glass-03 {
+    width: 25%;
+}
+
 @media only screen and (max-width: 600px) {
-    .desktop-only {
+    .desktop-only, .glass-01, .glass-02 {
         display: none;
+    }
+
+    .brillo-8 {
+        width: 100%;
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+
+    .glass-03 {
+        width: 40%;
     }
 }
