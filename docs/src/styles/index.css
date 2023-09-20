@@ -54,8 +54,9 @@
 }
 
 .brillo-8 {
-    margin-left: -8%;
+    margin-left: -2%;
     margin-top: 6%;
+    transform: rotate(-7deg);
 }
 
 .glass-01 {
@@ -66,7 +67,7 @@
 
 .glass-02 {
     z-index: -1;
-    left: 40%;
+    left: 46%;
     bottom: 6%;
     width: 18%;
 }
@@ -84,9 +85,14 @@
         width: 100%;
         margin-top: 0px;
         margin-left: 0px;
+        transform: none;
     }
 
     .glass-03 {
         width: 40%;
+    }
+
+    .learn-more {
+        width: 100%;
     }
 }
