@@ -25,6 +25,7 @@ import TypeScriptLogo from "../../assets/typescript-logo.png";
 import VercelLogo from "../../assets/vercel-logo.png";
 import VSCodeLogo from "../../assets/vscode-logo.png";
 import StackIcon from "../components/stackicon";
+import HomePageCard from "../components/homepagecard";
 
 export default class Home extends React.Component {
     onPageout(): void {
@@ -106,80 +107,27 @@ export default class Home extends React.Component {
 
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-4">
-                            <div className="card card-body border-light bg-transparent rounded-0">
-                                <RectangleGroupIcon className="icon-48 justify-self-center align-self-center desktop-only" />
+                        <HomePageCard 
+                            icon={RectangleGroupIcon}
+                            title="Custom PCB Design"
+                            content="Brillo-8 is housed on a 80cm x 50mm PCB, making it highly portable and easy to carry in your pocket."
+                            buttonText="See PCB Files"
+                            href="#" />
 
-                                <center>
-                                    <div className="mobile-only">
-                                        <br/>
-                                        <RectangleGroupIcon className="icon-mob-48" />
-                                    </div>
+                        <HomePageCard 
+                            icon={CursorArrowRaysIcon}
+                            title="User-Friendly Interface"
+                            content="Intuitive switches and button for pushing instructions, flashing firmware, and resetting the device."
+                            buttonText="Hardware Interface"
+                            href="#" />
 
-                                    <br/>
-                                    <h3>Compact PCB Design</h3>
-                                    <br/>
-                                    <p>Brillo-8 is housed on a 80cm x 50mm PCB, making it highly portable and easy to carry in your pocket.</p>
-
-                                    <br/>
-                                </center>
-
-                                <a href="#" className="btn btn-outline-info rounded-0 learn-more">
-                                    See PCB Files
-                                    <ArrowRightIcon className="icon-24 pl-2" />
-                                </a>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-4">
-                            <div className="card card-body border-light bg-transparent rounded-0">
-                                <CursorArrowRaysIcon className="icon-48 justify-self-center align-self-center desktop-only" />
-
-                                <center>
-                                    <div className="mobile-only">
-                                        <br/>
-                                        <CursorArrowRaysIcon className="icon-mob-48" />
-                                    </div>
-
-                                    <br/>
-                                    <h3>User-Friendly Interface</h3>
-                                    <br/>
-                                    <p>Intuitive switches and button for pushing instructions, flashing firmware, and resetting the device.</p>
-
-                                    <br/>
-                                </center>
-
-                                <a href="#" className="btn btn-outline-info rounded-0 learn-more">
-                                    Hardware Interface
-                                    <ArrowRightIcon className="icon-24 pl-2" />
-                                </a>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-4">
-                            <div className="card card-body border-light bg-transparent rounded-0">
-                                <CodeBracketSquareIcon className="icon-48 justify-self-center align-self-center desktop-only" />
-
-                                <center>
-                                    <div className="mobile-only">
-                                        <br/>
-                                        <CodeBracketSquareIcon className="icon-mob-48" />
-                                    </div>
-
-                                    <br/>
-                                    <h3>Open-Source Firmware</h3>
-                                    <br/>
-                                    <p>Update and upgrade the Brillo-8's embedded system to modify or enhance and suit your needs.</p>
-
-                                    <br/>
-                                </center>
-
-                                <a href="https://github.com/nthnn/Brillo-8" className="btn btn-outline-info rounded-0 learn-more">
-                                    GitHub Repository
-                                    <ArrowRightIcon className="icon-24 pl-2" />
-                                </a>
-                            </div>
-                        </div>
+                        <HomePageCard 
+                            icon={CodeBracketSquareIcon}
+                            title="Open-Source Firmware"
+                            content="Update and upgrade the Brillo-8's embedded system to modify or enhance and suit your needs."
+                            buttonText="GitHub Repository"
+                            href="https://github.com/nthnn/Brillo-8"
+                            target="_blank" />
                     </div>
                 </div>
 
