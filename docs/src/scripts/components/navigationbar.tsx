@@ -7,8 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default class NavigationBar extends React.Component<{
-    currentPage: string,
-    onPageout: ()=> void
+    currentPage: string
 }, {}> {
     render() {
         return (
@@ -25,13 +24,13 @@ export default class NavigationBar extends React.Component<{
                         <div className="collapse navbar-collapse justify-content-end" id="nav-bar">
                             <ul className="navbar-nav">
                                 <li className="nav-item">
-                                    <a href="#" className={(this.props.currentPage == "home" ? "active ": "") + "nav-link"} onClick={()=> this.props.currentPage !== "home" ? this.props.onPageout() : ()=> {}}>
+                                    <a href={this.props.currentPage === "home" ? "#" : "/"} className={(this.props.currentPage == "home" ? "active ": "") + "nav-link"}>
                                         <HomeModernIcon className="icon-24"/>
                                         Home
                                     </a>
                                 </li>
                                 <li className="nav-item">
-                                    <a href="#" className={(this.props.currentPage == "docs" ? "active ": "") + "nav-link"} onClick={()=> this.props.currentPage !== "docs" ? this.props.onPageout() : ()=> {}}>
+                                    <a href={this.props.currentPage === "docs" ? "#" : "documentation.html"} className={(this.props.currentPage == "docs" ? "active ": "") + "nav-link"}>
                                         <DocumentIcon className="icon-24"/>
                                         Documentations
                                     </a>

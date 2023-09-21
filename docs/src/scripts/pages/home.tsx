@@ -29,9 +29,6 @@ import HomePageCard from "../components/homepagecard";
 import Footer from "../components/footer";
 
 export default class Home extends React.Component {
-    onPageout(): void {
-    }
-
     render() {
         return (
             <>
@@ -84,7 +81,7 @@ export default class Home extends React.Component {
                 <div className="desktop-only"><br/><br/></div>
                 <br/>
 
-                <NavigationBar currentPage="home" onPageout={this.onPageout} />
+                <NavigationBar currentPage="home" />
 
                 <br id="main-section"/><br/><br/><br/><br/><br/>
                 <div className="desktop-only"><br/></div>

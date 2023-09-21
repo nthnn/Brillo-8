@@ -4,8 +4,8 @@
   "description": "Brillo-8 Official Documentation",
   "source": "src/index.html",
   "scripts": {
-    "build": "parcel build src/index.html",
-    "docs": "parcel src/index.html --open",
+    "build": "parcel build src/*.html",
+    "docs": "parcel src/index.html src/documentation.html --open",
     "clean": "rimraf .parcel-cache dist",
     "deploy": "cd .. && npx vercel deploy --prod && cd docs"
   },
