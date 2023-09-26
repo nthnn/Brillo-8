@@ -28,13 +28,14 @@
 #include "brillo8_vm_opcodes.h"
 #include "brillo8_vm_util.h"
 
-int get_input_bytecode();
+uint16_t get_input_bytecode();
 void load_program();
 void blink_once();
 
 Brillo8FlashProgram flash;
 
 void setup() {
+    Serial.begin(9600);
     pinMode(BRILLO8_BTN_PUSH, INPUT_PULLUP);
     pinMode(BRILLO8_BTN_FLASH, INPUT_PULLUP);
 
@@ -50,8 +51,13 @@ void setup() {
     pinMode(BRILLO8_LED_FLASH, OUTPUT);
 
     flash.init();
-    //if(digitalRead(BRILLO8_BTN_FLASH) == LOW)
-    //    flash.erase();
+    if(digitalRead(BRILLO8_BTN_FLASH) == LOW) {
+        flash.erase();
+
+        digitalWrite(BRILLO8_LED_FLASH, HIGH);
+        delay(3000);
+        digitalWrite(BRILLO8_LED_FLASH, LOW);
+    }
 
     /*flash.erase();
     flash.push(PUSH);
@@ -106,15 +112,24 @@ void setup() {
     flash.push(4);
 
     flash.push(HALT);
-    flash.push(EOBC);*/
-    load_program();
+    flash.push(EOBC);
+    load_program();*/
 }
 
 void loop() {
-    //if(digitalRead(BRILLO8_BTN_PUSH) == LOW)
-    //    flash.push(get_input_bytecode());
-    //else if(digitalRead(BRILLO8_BTN_FLASH))
-    //    load_program();
+    if(digitalRead(BRILLO8_BTN_PUSH) == LOW) {
+        uint16_t bytecode = get_input_bytecode();
+        flash.push(bytecode);
+
+        Serial.println(bytecode);
+
+        blink_once();
+        delay(200);
+    }
+    else if(digitalRead(BRILLO8_BTN_FLASH)) {
+        blink_once();
+        load_program();
+    }
 }
 
 void load_program() {
@@ -126,11 +141,11 @@ void load_program() {
 
 void blink_once() {
     digitalWrite(BRILLO8_LED_FLASH, 1);
-    delay(300);
+    delay(800);
     digitalWrite(BRILLO8_LED_FLASH, 0);
 }
 
-int get_input_bytecode() {
+uint16_t get_input_bytecode() {
     char inputs[] = {
         digitalRead(BRILLO8_BTN_IN0) == LOW ? '1' : '0',
         digitalRead(BRILLO8_BTN_IN1) == LOW ? '1' : '0',
